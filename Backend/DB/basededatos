@@ -1,0 +1,34 @@
+CREATE DATABASE Blackhack;
+
+CREATE TABLE Jugador(
+    Id_Jugador  SERIAL, 
+    Nombre VARCHAR(55) NOT NULL, 
+    is_Bot  BOOLEAN NOT NULL,
+    PRIMARY KEY(Id_Jugador)
+    );
+
+CREATE TABLE Juego(
+    Id_Juego  SERIAL, 
+    PRIMARY KEY(Id_Juego)
+    );
+
+CREATE TABLE Mano(
+    Id_Mano  SERIAL,
+    id_Jugador INTEGER,
+    Id_Juego INTEGER,
+    PRIMARY KEY(Id_Mano),
+    FOREIGN KEY (Id_Jugador) REFERENCES Jugador(Id_Jugador),
+    FOREIGN KEY (Id_Juego) REFERENCES Juego(Id_Juego)
+);
+
+CREATE TABLE Carta (
+    Id_Carta  SERIAL,
+    Valor NUMERIC() NOT NULL,
+    Figura ARRAY NOT NULL,
+    Id_Jugador INTEGER,
+    Id_Juego INTEGER,
+    PRIMARY KEY(Id_Carta),
+    FOREIGN KEY (Id_Jugador) REFERENCES Jugador(Id_Jugador),
+    FOREIGN KEY (Id_Juego) REFERENCES Juego(Id_Juego)
+
+);

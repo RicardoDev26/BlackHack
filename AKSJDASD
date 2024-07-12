@@ -1,0 +1,57 @@
+<template>
+  <div class="flex flex-col items-center mt-10">
+    <h2 class="text-3xl font-bold mb-4">¡A jugar!</h2>
+
+    <!-- Cartas del jugador -->
+    <div class="flex gap-4 mb-8">
+      <Carta v-for="(card, index) in playerCards" :key="index" :valor="card.valor" :figura="card.figura" />
+    </div>
+
+    <!-- Score -->
+    <div class="flex gap-4 mb-8">
+      <div class="bg-black text-white rounded-lg p-4">
+        <div class="text-xl font-bold">SCORE</div>
+        <div class="text-3xl font-bold">{{ playerScore }}</div>
+      </div>
+
+      <div class="bg-red-600 text-white rounded-lg p-4">
+        <div class="text-xl font-bold">AI</div>
+        <div class="text-3xl font-bold">{{ botScore }}</div>
+      </div>
+    </div>
+
+    <!-- Cartas del bot -->
+    <div class="flex gap-4 mb-8">
+      <Carta v-for="(card, index) in botCards" :key="index" :valor="card.valor" :figura="card.figura" />
+    </div>
+
+    <!-- Botones de acción -->
+    <div class="flex gap-4">
+      <button class="bg-gray-800 text-white px-6 py-3 rounded-lg text-xl">Stand</button>
+      <button class="bg-gray-800 text-white px-6 py-3 rounded-lg text-xl">Hit</button>
+    </div>
+  </div>
+</template>
+
+<script setup>
+c
+import Carta from '../components/Carta.vue';
+
+const playerCards = ref([]);
+const botCards = ref([]);
+const playerScore = ref(0);
+const botScore = ref(0);
+
+// Lógica para obtener las cartas y puntajes desde el backend o según la lógica del juego
+// Aquí deberías manejar la comunicación con el backend para obtener las cartas iniciales
+
+// Ejemplo simple de cartas de prueba
+playerCards.value = [{ valor: 'A', figura: 'Corazones' }, { valor: '10', figura: 'Diamantes' }];
+botCards.value = [{ valor: 'K', figura: 'Trebol' }, { valor: '8', figura: 'Picas' }];
+playerScore.value = 21; // Puntaje del jugador
+botScore.value = 18; // Puntaje del bot
+</script>
+
+<style>
+/* Estilos específicos para la vista de Blackjack si es necesario */
+</style>
