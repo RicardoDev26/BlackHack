@@ -101,7 +101,7 @@ const calcularPuntaje = (cartas) => {
 }
 
 onMounted(() => {
-  fetch('http://localhost:3001/ping', { 
+  fetch('https://blackhack-api2.onrender.com/ping', { 
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -131,7 +131,7 @@ onMounted(() => {
 
 
 const pedirCarta = () => {
-  fetch('http://localhost:3001/nuevaCarta', {
+  fetch('https://blackhack-api2.onrender.com/nuevaCarta', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
