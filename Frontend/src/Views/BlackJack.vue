@@ -215,10 +215,10 @@ body {
     background-color: #B1BE96;
 }
 .fondo-vista {
-    background-size: cover; /* Ajusta la imagen para que cubra toda el área */
-    background-position: center; /* Centra la imagen */
-    height: 100vh; /* Ocupa toda la altura de la vista */
-    width: 100vw; /* Ocupa toda la anchura de la vista */
+    background-size: cover; 
+    background-position: center; 
+    height: 100vh;
+    width: 100vw; 
   }
 
 </style>
