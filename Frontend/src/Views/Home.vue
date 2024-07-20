@@ -1,6 +1,6 @@
 <template>
-      <div class="flex flex-col gap-5">
-    <div class="text-[150px]">
+  <div class="flex flex-col gap-5 items-center">
+    <div class="lg:text-[150px] text-[39px]">
         BLACKHACK
     </div>
       <button @click="startGame" class=" text-xl rounded-2xl bg-black text-white p-4"> Iniciar Partida </button>  

@@ -1,5 +1,5 @@
 <template>
- <section class="flex">
+ <section class="flex h-screen">
     <Tablero 
     :ScoreJugador="jugadorScore"
     :ScoreBot= "IAScore"
@@ -7,20 +7,27 @@
     :Check="pedirCarta"
     :turnoV="turnoJuego === Turnos.Bot"
     :turnoI="turnoJuego === Turnos.Jugador"
+    class="hidden lg:block z-10"
     />
-    <section class=" flex-col flex w-screen justify-between p-9">
-      <div class=" w-full h-[150px] opacity-100 flex gap-1 justify-center">
+    <section :style="{ backgroundImage: `url(${fondoCel})` }" class="fondo-vista hidden lg:flex flex-col w-screen justify-between p-9">
+      <div class="absolute inset-0 bg-black bg-opacity-50"></div>
+      <div class="z-10 w-full h-[150px] opacity-100 flex gap-1 justify-center">
         <carta v-show="turnoJuego === Turnos.Bot" v-for="IACarta in IACartas" :key="IACarta.id" :figura="IACarta?.figura" :valor="IACarta?.valor?.valorF" />
         <mazo v-for="IACarta in IACartas" v-show="turnoJuego === Turnos.Jugador" />
       </div>
-      <div class="w-full text-8xl font-bold text-black">BLACKHACK</div>
+      <div class="z-10 w-full text-8xl font-bold text-white">BLACKHACK</div>
       <div class="flex gap-4">
-        <div class=" w-full h-[150px]  flex gap-1 justify-center">
+        <div class="z-10 w-full h-[150px]  flex gap-1 justify-center">
           <carta v-for="jugadorCarta in jugadorCartas" :key="jugadorCarta.id" :figura="jugadorCarta?.figura" :valor="jugadorCarta?.valor?.valorF"  /> 
         </div>
-        <mazo v-show="turnoJuego === Turnos.Jugador" @click="pedirCarta" />
-        <mazo v-show="turnoJuego === Turnos.Bot" />
+        <div class="z-10">
+          <mazo v-show="turnoJuego === Turnos.Jugador" @click="pedirCarta" />
+          <mazo v-show="turnoJuego === Turnos.Bot" />
+         </div> 
       </div>
+    </section>
+    <section class="block lg:hidden">
+      <vistaCel />
     </section>
  </section>
  <modalLoser :showModal="isModalLoserOpen" />
@@ -29,6 +36,7 @@
 
 <script setup>
 import Tablero from '../components/Tablero.vue';
+import vistaCel from '../components/vistCelular.vue';
 import { onMounted } from 'vue';
 import carta from '../components/Carta.vue'
 import Mazo from '../components/Mazo.vue'
@@ -36,6 +44,7 @@ import { ref, watch } from 'vue';
 import { message } from 'ant-design-vue';
 import modalLoser from '../components/modalLoser.vue';
 import modalWin from '../components/modalWin.vue';
+import fondoCel from '../components/fondoGame.jpg';
 
 const isModalLoserOpen = ref(false);
 const isModalWinOpen = ref(false);
@@ -101,7 +110,7 @@ const calcularPuntaje = (cartas) => {
 }
 
 onMounted(() => {
-  fetch('https://blackhack-api2.onrender.com/ping', { 
+  fetch('http://localhost:3001/ping', { 
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -131,7 +140,7 @@ onMounted(() => {
 
 
 const pedirCarta = () => {
-  fetch('https://blackhack-api2.onrender.com/nuevaCarta', {
+  fetch('http://localhost:3001/nuevaCarta', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -192,6 +201,9 @@ watch(turnoJuego, async (newValue) => {
     } else if (jugadorScore.value === PuntuacionGanadora && IAScore.value === PuntuacionGanadora) {
       estadoJugador.value = estado.perdedor;
       ModalOpen();
+    } else if (jugadorScore.value === IAScore.value){
+      estadoJugador.value = estado.perdedor;
+      ModalOpen();
     }
   }
 });
@@ -202,5 +214,11 @@ watch(turnoJuego, async (newValue) => {
 body {
     background-color: #B1BE96;
 }
+.fondo-vista {
+    background-size: cover; /* Ajusta la imagen para que cubra toda el área */
+    background-position: center; /* Centra la imagen */
+    height: 100vh; /* Ocupa toda la altura de la vista */
+    width: 100vw; /* Ocupa toda la anchura de la vista */
+  }
 
 </style>
