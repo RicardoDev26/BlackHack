@@ -44,7 +44,8 @@
       <div class="flex flex-col text-white gap-2">
         <div class="bg-[#FF221B] rounded-md px-4 py-9 hover:cursor-pointer hover:bg-black" v-show="props.turnoI" @click="props.Check">Check</div>
         <div class="bg-[#FF221B] rounded-md px-4 py-9 hover:cursor-pointer" v-show="props.turnoV">Check</div>
-        <div class="bg-[#FA6C00] rounded-md px-5 py-9 hover:cursor-pointer hover:bg-black" @click="props.Stand">Stand</div>
+        <div class="bg-[#FA6C00] rounded-md px-5 py-9 hover:cursor-pointer hover:bg-black" v-show="props.turnoI" @click="props.Stand">Stand</div>
+        <div class="bg-[#FA6C00] rounded-md px-5 py-9 hover:cursor-pointer hover:bg-black" v-show="props.turnoV">Stand</div>
       </div>
 
       <div class="flex flex-col text-white gap-3 w-full">

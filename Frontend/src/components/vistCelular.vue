@@ -29,7 +29,13 @@
       <div class="flex w-full h-1/2 gap-4 p-4 justify-center items-center">
         <div class="w-1/2 h-full">
           <Boton 
+          v-show="turnoJuego === Turnos.Jugador"
           @click="standcard"
+          text="Stand"
+          class="w-full h-full text-4xl" 
+          />
+          <Boton 
+          v-show="turnoJuego === Turnos.Bot"
           text="Stand"
           class="w-full h-full text-4xl" 
           />
@@ -69,13 +75,15 @@ const isModalLoserOpen = ref(false);
 const isModalWinOpen = ref(false);
 
 
-const ModalOpen = () => {
-  if(estadoJugador.value === estado.ganador) {
-    isModalWinOpen.value = true;
-  } else {
-    isModalLoserOpen.value = true;
-  }
-}
+const ModalOpenD = (estado) => {
+   setTimeout(() => {
+     if (estado === 'ganador') {
+       isModalWinOpen.value = true
+     } else {
+       isModalLoserOpen.value = true
+     }
+   }, 1000)
+ }
 
 
 
@@ -150,6 +158,10 @@ onMounted(() => {
     if (jugadorScore.value === PuntuacionGanadora) {
       turnoJuego.value = Turnos.Bot
        standcard();
+       if (jugadorScore.value > IAScore.value) {
+        ModalOpenD(estado.ganador);
+        ModalOpen();
+       }
     } else {
       turnoJuego.value = Turnos.Jugador;
     }
@@ -179,11 +191,9 @@ const pedirCarta = () => {
       IACartas.value.push(data.nuevaCarta);
       IAScore.value = calcularPuntaje(IACartas.value);
         if (IAScore.value > PuntuacionGanadora) {
-          estadoJugador.value = estado.ganador;
-          ModalOpen();
+          ModalOpenD(estado.ganador);
         } else if (IAScore.value === PuntuacionGanadora) {
-          estadoJugador.value = estado.perdedor;
-          ModalOpen();
+          ModalOpenD(estado.perdedor);
         }
         return;
     } else {
@@ -192,8 +202,7 @@ const pedirCarta = () => {
       jugadorScore.value = calcularPuntaje(jugadorCartas.value);
       
       if(jugadorScore.value > PuntuacionGanadora){
-        estadoJugador.value = estado.perdedor
-          ModalOpen();
+        ModalOpenD(estado.perdedor);
       } else if (jugadorScore.value === PuntuacionGanadora){
         turnoJuego.value === Turnos.Bot
       }
@@ -216,17 +225,13 @@ watch(turnoJuego, async (newValue) => {
       await new Promise(resolve => setTimeout(resolve, 1000));
     }
     if (jugadorScore.value < 21 && jugadorScore.value > IAScore.value) {
-      estadoJugador.value = estado.ganador;
-      ModalOpen();
+      ModalOpenD(estado.ganador);
     } else if (jugadorScore.value < IAScore.value) {
-      estadoJugador.value = estado.perdedor;
-      ModalOpen();
+      ModalOpenD(estado.perdedor);
     } else if (jugadorScore.value === PuntuacionGanadora && IAScore.value === PuntuacionGanadora) {
-      estadoJugador.value = estado.perdedor;
-      ModalOpen();
+      ModalOpenD(estado.perdedor);
     } else if (jugadorScore.value === IAScore.value){
-      estadoJugador.value = estado.perdedor;
-      ModalOpen();
+      ModalOpenD(estado.perdedor);
     }
   }
 });
