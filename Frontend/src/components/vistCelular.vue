@@ -1,38 +1,61 @@
 <template>
- <section class="flex h-screen">
-    <Tablero 
-    :ScoreJugador="jugadorScore"
-    :ScoreBot= "IAScore"
-    :Stand="standcard"
-    :Check="pedirCarta"
-    :turnoV="turnoJuego === Turnos.Bot"
-    :turnoI="turnoJuego === Turnos.Jugador"
-    class="hidden lg:block z-10"
-    />
-    <section :style="{ backgroundImage: `url(${fondoCel})` }" class="fondo-vista hidden lg:flex flex-col w-screen justify-between p-9">
+  <div class="flex flex-col h-screen">
+    <section :style="{ backgroundImage: `url(${fondoCel})` }" class="fondo-vista flex flex-col justify-between p-2">
       <div class="absolute inset-0 bg-black bg-opacity-50"></div>
-      <div class="z-10 w-full h-[150px] opacity-100 flex gap-1 justify-center">
+        <div class="z-10 w-full h-[150px] opacity-100 flex gap-1 justify-start">
         <carta v-show="turnoJuego === Turnos.Bot" v-for="IACarta in IACartas" :key="IACarta.id" :figura="IACarta?.figura" :valor="IACarta?.valor?.valorF" />
         <mazo v-for="IACarta in IACartas" v-show="turnoJuego === Turnos.Jugador" />
       </div>
-      <div class="z-10 w-full text-8xl font-bold text-white">BLACKHACK</div>
+      <div class="z-10 w-full text-5xl  text-white font-black">BLACKHACK</div>
       <div class="flex gap-4">
-        <div class="z-10 w-full h-[150px]  flex gap-1 justify-center">
+        <div class="z-10 w-full h-[150px]  flex gap-1 justify-start">
           <carta v-for="jugadorCarta in jugadorCartas" :key="jugadorCarta.id" :figura="jugadorCarta?.figura" :valor="jugadorCarta?.valor?.valorF"  /> 
         </div>
-        <div class="z-10">
-          <mazo v-show="turnoJuego === Turnos.Jugador" @click="pedirCarta" />
-          <mazo v-show="turnoJuego === Turnos.Bot" />
-         </div> 
+      </div> 
+    </section>
+
+    <section class="bg-[#3D4231] w-full h-full text-white z-10">
+      <div class="flex w-full h-1/2 gap-4 p-4 justify-center items-center">
+        <div class="w-1/2 h-full p-2 rounded-md bg-[#C2C36C]">
+          <div class="h-1/3 text-3xl font-black">MiScore</div>
+          <div class="h-2/3 bg-[#393D2C] rounded-md flex items-center justify-center text-7xl font-black">{{ jugadorScore }}</div>
+        </div>
+        <div class="w-1/2 h-full p-2 rounded-md bg-[#C2C36C]">
+          <div class="h-1/3 text-3xl font-black">ScoreBot</div>
+          <div  v-show="turnoJuego === Turnos.Bot" class="h-2/3 bg-[#393D2C] rounded-md flex items-center justify-center text-7xl font-black">{{ IAScore }}</div>
+          <div v-show="turnoJuego === Turnos.Jugador" class="h-2/3 bg-[#393D2C] rounded-md flex items-center justify-center text-7xl font-black">???</div>
+        </div>
+      </div>
+      <div class="flex w-full h-1/2 gap-4 p-4 justify-center items-center">
+        <div class="w-1/2 h-full">
+          <Boton 
+          @click="standcard"
+          text="Stand"
+          class="w-full h-full text-4xl" 
+          />
+        </div>
+        <div class="w-1/2 h-full">
+          <Boton 
+          v-show="turnoJuego === Turnos.Bot"
+          text="Check" 
+          class="w-full h-full text-4xl"
+          />
+            <Boton 
+          @click="pedirCarta"
+          v-show="turnoJuego === Turnos.Jugador"
+          text="Check" 
+          class="w-full h-full text-4xl"
+          />
+        </div>
       </div>
     </section>
- </section>
- <modalLoser :showModal="isModalLoserOpen" />
- <modalWin :showModal="isModalWinOpen" />
+  </div>  
+  <modalLoser :showModal="isModalLoserOpen" />
+  <modalWin :showModal="isModalWinOpen" />
 </template>
-
+  
 <script setup>
-import Tablero from '../components/Tablero.vue';
+import fondoCel from './fondoGame.jpg';
 import { onMounted } from 'vue';
 import carta from '../components/Carta.vue'
 import Mazo from '../components/Mazo.vue'
@@ -40,10 +63,11 @@ import { ref, watch } from 'vue';
 import { message } from 'ant-design-vue';
 import modalLoser from '../components/modalLoser.vue';
 import modalWin from '../components/modalWin.vue';
-import fondoCel from '../components/fondoGame.jpg';
+import Boton from '../components/BotonVerde.vue';
 
 const isModalLoserOpen = ref(false);
 const isModalWinOpen = ref(false);
+
 
 const ModalOpen = () => {
   if(estadoJugador.value === estado.ganador) {
@@ -83,6 +107,8 @@ const IAScore = ref ('');
 const jugadorCartas = ref ([]);
 const IACartas = ref([]);
 const PuntuacionGanadora = 21;
+
+
 
 const calcularPuntaje = (cartas) => {
     let total = 0;
@@ -206,16 +232,12 @@ watch(turnoJuego, async (newValue) => {
 });
 
 </script>
-
-<style>
-body {
-    background-color: #B1BE96;
-}
-.fondo-vista {
+  
+  <style>
+  .fondo-vista {
     background-size: cover; 
     background-position: center; 
-    height: 100vh;
+    height: 100vh; 
     width: 100vw; 
   }
-
-</style>
+  </style>
