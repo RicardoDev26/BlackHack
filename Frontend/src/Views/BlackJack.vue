@@ -26,9 +26,6 @@
          </div> 
       </div>
     </section>
-    <section class="block lg:hidden">
-      <vistaCel />
-    </section>
  </section>
  <modalLoser :showModal="isModalLoserOpen" />
  <modalWin :showModal="isModalWinOpen" />
@@ -36,7 +33,6 @@
 
 <script setup>
 import Tablero from '../components/Tablero.vue';
-import vistaCel from '../components/vistCelular.vue';
 import { onMounted } from 'vue';
 import carta from '../components/Carta.vue'
 import Mazo from '../components/Mazo.vue'
@@ -126,6 +122,7 @@ onMounted(() => {
     jugadorScore.value = calcularPuntaje(data.jugadorCartas);
     IAScore.value = calcularPuntaje(data.IACartas);
     if (jugadorScore.value === PuntuacionGanadora) {
+      turnoJuego.value = Turnos.Bot
        standcard();
     } else {
       turnoJuego.value = Turnos.Jugador;
